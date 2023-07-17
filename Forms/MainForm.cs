@@ -146,7 +146,7 @@ namespace VideoSystem
                         //第二个参数不能是""，也就是不能为空，因此需要" ";
                         GDI:
                         {
-                            _Image_Data_GDI.P = new PointF(tl_x, tl_y);
+                            _Image_Data_GDI.P = new PointF(tl_x + Math.Abs(MainForm.width - frame.Width), tl_y);
 
                             _Image_Data_GDI.text = classNames_cn[objIndex];
 
@@ -327,7 +327,7 @@ namespace VideoSystem
         {
             UpdateGDIText(e);
         }
-        public static void UpdateGDIText (PaintEventArgs _paintEventArgs)
+        public void UpdateGDIText (PaintEventArgs _paintEventArgs)
         {
             Graphics g = _paintEventArgs.Graphics;
             Console.WriteLine(_Image_Data_GDI.P);
