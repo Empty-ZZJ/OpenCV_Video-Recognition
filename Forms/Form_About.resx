@@ -117,6 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="richTextBox1.Text" xml:space="preserve">
+    <value>【一】图像识别的原理是什么？
+答：1. 仿射变化 2. 极坐标变换  3.对比度增强 4.直方图均衡 5.图像平滑 6.滤波 7.阈值分割 8.形态学处理 9.边缘检测 10.几何形状的检测和拟合 11. 傅里叶变换 12.频率域滤波 13.色彩空间 14.读存图像
+以上便是图像识别的全部。
+
+【二】我可以自己训练识别模型吗？
+答：可以的，训练自己的分类器文件，需要用到两个程序 : opencv_createsamples.exe和opencv_traincascade.exe。
+
+【三】训练模型需要很高的硬件需求吗？
+答：一般情况下是不需要的，训练图像识别的性能需求较低，要求最好有一张算力足够的显卡。
+
+【四】这项技术可以被应用在何处？
+答：1)遥感图像识别：航空遥感和卫星遥感图像通常用图像识别技术进行加工以便提取有用的信息。该技术主要用于地形地质探查，森林、水利、海洋、农业等资源调查，灾害预测，环境污染监测，气象卫星云图处理以及地面军事目标识别等。
+2)通讯领域的应用：包括图像传输、电视电话、电视会议等。
+3)军事、公安刑侦等领域的应用：图像识别技术在军事、公安刑侦方面的应用很广泛，例如军事目标的侦察、制导和警戒系统；自动灭火器的控制及反伪装；公安部门的现场照片、指纹、手迹、印章、人像等的处理和辨识；历史文字和图片档案的修复和管理等等。
+4)生物医学图像识别：图像识别在现代医学中的应用非常广泛，它具有直观、无创伤、安全方便等特点。在临床诊断和病理研究中广泛借助图像识别技术，例如CT(Computed Tomography)技术等。
+5)机器视觉领域的应用：作为智能机器人的重要感觉器官，机器视觉主要进行3D图像的理解和识别，该技术也是研究的热门课题之一。机器视觉的应用领域也十分广泛，例如用于军事侦察、危险环境的自主机器人，邮政、医院和家庭服务的智能机器人。此外机器视觉还可用于工业生产中的工件识别和定位，太空机器人的自动操作等。
+</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
