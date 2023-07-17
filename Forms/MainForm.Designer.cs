@@ -53,6 +53,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.Label_识别到的物体名称 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.MaintabControl.SuspendLayout();
             this.关于程序.SuspendLayout();
@@ -65,6 +66,7 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.文件ToolStripMenuItem,
@@ -160,6 +162,7 @@
             // 
             // 照片识别
             // 
+            this.照片识别.Controls.Add(this.Label_识别到的物体名称);
             this.照片识别.Controls.Add(this.button3);
             this.照片识别.Controls.Add(this.PictureBoxImage);
             this.照片识别.Location = new System.Drawing.Point(4, 34);
@@ -189,6 +192,8 @@
             this.PictureBoxImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.PictureBoxImage.TabIndex = 11;
             this.PictureBoxImage.TabStop = false;
+            this.PictureBoxImage.Click += new System.EventHandler(this.PictureBoxImage_Click);
+            this.PictureBoxImage.Paint += new System.Windows.Forms.PaintEventHandler(this.PictureBoxImage_Paint);
             // 
             // 视频识别
             // 
@@ -244,6 +249,7 @@
             this.MainCamera.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.MainCamera.TabIndex = 10;
             this.MainCamera.TabStop = false;
+            this.MainCamera.Paint += new System.Windows.Forms.PaintEventHandler(this.MainCamera_Paint);
             // 
             // Timer_UpdatePhoto
             // 
@@ -287,6 +293,16 @@
             this.label1.Text = "aeroplane\r\nbicycle\r\nbird\r\nboat\r\nbottle \r\nbus\r\ncar\r\ncat\r\nchair\r\ncow \r\ndiningtable\r" +
     "\ndog\r\nhorse\r\nmotorbike\r\nperson\r\npottedplant\r\nsheep\r\nsofa\r\ntrain\r\ntvmonito";
             // 
+            // Label_识别到的物体名称
+            // 
+            this.Label_识别到的物体名称.AutoSize = true;
+            this.Label_识别到的物体名称.Font = new System.Drawing.Font("黑体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Label_识别到的物体名称.Location = new System.Drawing.Point(169, 688);
+            this.Label_识别到的物体名称.Name = "Label_识别到的物体名称";
+            this.Label_识别到的物体名称.Size = new System.Drawing.Size(178, 24);
+            this.Label_识别到的物体名称.TabIndex = 13;
+            this.Label_识别到的物体名称.Text = "识别到的物体：";
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
@@ -311,6 +327,7 @@
             this.关于程序.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.照片识别.ResumeLayout(false);
+            this.照片识别.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxImage)).EndInit();
             this.视频识别.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.MainCamera)).EndInit();
@@ -343,6 +360,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label Label_识别到的物体名称;
     }
 }
 

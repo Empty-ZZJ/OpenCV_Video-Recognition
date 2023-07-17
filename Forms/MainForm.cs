@@ -3,11 +3,14 @@ using OpenCvSharp.Dnn;
 using OpenCvSharp.Extensions;
 using SkinSharp;
 using System;
+using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 using VideoSystem.Codes;
 using VideoSystem.Forms;
+using Point = OpenCvSharp.Point;
+
 namespace VideoSystem
 {
     public partial class MainForm : Form
@@ -37,6 +40,13 @@ namespace VideoSystem
 "cow", "diningtable", "dog", "horse",
 "motorbike", "person", "pottedplant",
 "sheep", "sofa", "train", "tvmonitor" };
+        string[] classNames_cn = new string[] { "背景", "飞机", "自行车", "鸟", "船", "瓶子", "公共汽车", "汽车", "猫", "椅子", "牛", "餐桌", "狗", "马", "摩托车", "人", "盆栽植物", "羊", "沙发", "火车", "显示器" };
+        public struct Image_Data_GDI
+        {
+            public string text;
+            public PointF P;
+        };
+        public static Image_Data_GDI _Image_Data_GDI = new Image_Data_GDI();
         /// <summary>
         /// 运行地址
         /// </summary>
@@ -48,6 +58,7 @@ namespace VideoSystem
         }
         private void MainForm_Load (object sender, EventArgs e)
         {
+            _Image_Data_GDI.text = "";
             Skin_class:
             {
                 WindowsCoreSkin = new SkinH_Net();
@@ -87,8 +98,7 @@ namespace VideoSystem
                     MessageBox.Show("当前文件不存在，请重新选择！", "致命错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
-                PictureBoxImage.Image =
-                Thread_LoadPhoto(Cv2.ImRead(PhotoPath, ImreadModes.Color));
+                PictureBoxImage.Image = Thread_LoadPhoto(Cv2.ImRead(PhotoPath, ImreadModes.Color));
 
             }
 
@@ -100,11 +110,12 @@ namespace VideoSystem
         /// <returns></returns>
         public System.Drawing.Bitmap Thread_LoadPhoto (Mat frame)
         {
+
             // 预测
             try //io有概率炸，try一下
             {
-                Net net = Net.ReadNetFromCaffe(RunPath + "\\MobileNetSSD_deploy.prototxt", RunPath + "\\MobileNetSSD_deploy.caffemodel");
-                Mat inputblob = CvDnn.BlobFromImage(frame, scaleFactor, new Size(width, height), meanVal, false);
+                Net net = Net.ReadNetFromCaffe(RunPath + "\\Model.config", RunPath + "\\Model.bin");
+                Mat inputblob = CvDnn.BlobFromImage(frame, scaleFactor, new OpenCvSharp.Size(width, height), meanVal, false);
                 net.SetInput(inputblob, "data");
                 Mat detection = net.Forward("detection_out");
                 //检测
@@ -112,12 +123,13 @@ namespace VideoSystem
                 float confidence_threshold = 0.3f;
 
 
+
                 for (int i = 0; i < detectionMat.Rows; i++)
                 {
                     float confidence = detectionMat.At<float>(i, 2);
                     if (confidence > confidence_threshold)
                     {
-                        //枚举每一像素点
+
                         int objIndex = (int)(detectionMat.At<float>(i, 1));
                         float tl_x = detectionMat.At<float>(i, 3) * frame.Cols;
                         float tl_y = detectionMat.At<float>(i, 4) * frame.Rows;
@@ -127,14 +139,31 @@ namespace VideoSystem
                         Rect object_box = new Rect((int)tl_x, (int)tl_y, (int)(br_x - tl_x), (int)(br_y - tl_y));
 
                         Cv2.Rectangle(frame, object_box, new Scalar(0, 0, 255), 2, LineTypes.Link8, 0);
-                        Cv2.PutText(frame, classNames[objIndex], new Point(tl_x, tl_y), HersheyFonts.HersheySimplex, 1.0, new Scalar(255, 0, 0), 2);
+
+
+                        //----由于PutText方法不支持中文，因此需要使用系统自带的自绘GDI画笔
+                        Cv2.PutText(frame, " ", new Point(tl_x, tl_y), HersheyFonts.HersheySimplex, 1.0, new Scalar(255, 0, 0), 2);
+                        //第二个参数不能是""，也就是不能为空，因此需要" ";
+                        GDI:
+                        {
+                            _Image_Data_GDI.P = new PointF(tl_x, tl_y);
+
+                            _Image_Data_GDI.text = classNames_cn[objIndex];
+
+                            //g.DrawString(classNames_cn[objIndex], new Font("宋体", 20, FontStyle.Bold), new SolidBrush(Color.Black), tl_x, tl_y);
+
+                        }
+                        Label_识别到的物体名称.Text = $"识别到的物体:{classNames_cn[objIndex]}";
                     }
+
                     if (DllImport_Pro.DllImport_Pro.GetInputState() != 0)
                     {
                         DllImport_Pro.DllImport_Pro.PeekMessage();
                     }
+
                 }
                 //释放内存
+
                 detection.Release();
                 inputblob.Release();
                 detectionMat.Release();
@@ -205,8 +234,6 @@ namespace VideoSystem
             fs.Close();
             MainCamera.Image = System.Drawing.Image.FromStream(new MemoryStream(fileBytes));
         }
-
-
         private void DisplayCamera (object sender, EventArgs e)
         {
             Mat frame = new Mat();
@@ -289,6 +316,28 @@ namespace VideoSystem
         private void 摄像头选择_SelectedIndexChanged (object sender, EventArgs e)
         {
             index_cmarea = 摄像头选择.SelectedIndex;
+        }
+
+        private void PictureBoxImage_Click (object sender, EventArgs e)
+        {
+
+        }
+
+        private void PictureBoxImage_Paint (object sender, PaintEventArgs e)
+        {
+            UpdateGDIText(e);
+        }
+        public static void UpdateGDIText (PaintEventArgs _paintEventArgs)
+        {
+            Graphics g = _paintEventArgs.Graphics;
+            Console.WriteLine(_Image_Data_GDI.P);
+
+            g.DrawString(_Image_Data_GDI.text, new Font("宋体", 20, FontStyle.Bold), new SolidBrush(Color.Red), _Image_Data_GDI.P);
+        }
+
+        private void MainCamera_Paint (object sender, PaintEventArgs e)
+        {
+            UpdateGDIText(e);
         }
     }
 }

@@ -15,5 +15,10 @@ namespace VideoSystem.Forms
             this.WindowState = FormWindowState.Maximized;
             //this.BackgroundImage=
         }
+
+        private void Full_Paint (object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

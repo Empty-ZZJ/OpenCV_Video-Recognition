@@ -41,6 +41,7 @@
             this.Name = "Full";
             this.Text = "全屏模式";
             this.Load += new System.EventHandler(this.Full_Load);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Full_Paint);
             this.ResumeLayout(false);
 
         }
