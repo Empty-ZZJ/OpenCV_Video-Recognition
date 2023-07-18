@@ -142,8 +142,8 @@ namespace VideoSystem
 
 
                         //----由于PutText方法不支持中文，因此需要使用系统自带的自绘GDI画笔
-                        Cv2.PutText(frame, " ", new Point(tl_x, tl_y), HersheyFonts.HersheySimplex, 1.0, new Scalar(255, 0, 0), 2);
-                        //第二个参数不能是""，也就是不能为空，因此需要" ";
+                        Cv2.PutText(frame, classNames[objIndex], new Point(tl_x, tl_y), HersheyFonts.HersheySimplex, 1.0, new Scalar(255, 0, 0), 2);
+                        //第二个参数不能是""，也就是不能为空;
                         GDI:
                         {
                             _Image_Data_GDI.P = new PointF(tl_x + Math.Abs(MainForm.width - frame.Width), tl_y);
